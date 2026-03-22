@@ -21,14 +21,14 @@ class MovieModelSerializer(serializers.ModelSerializer):
 
         return None
 
-    def validate_realese_date(self, value):
-        if value.year < 1900:
+    def validate_relese_date(self, value):
+        if value.year < 1990:
             raise serializers.ValidationError('Não e possível cadastrar filmes com data de lançamento anterior a 1990.')
         return value
 
     def validate_resume(self, value):
         if len(value) > 500:
-            raise serializers.ValidationError('O resumo não pode conter mais de 200 caracteres.')
+            raise serializers.ValidationError('O resumo não pode conter mais de 500 caracteres.')
         return value
 
 

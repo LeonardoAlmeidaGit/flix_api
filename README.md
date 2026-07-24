@@ -4,11 +4,11 @@ API REST completa para gestão de filmes desenvolvida com Django e Django REST F
 
 ## 🚀 Tecnologias
 
-- Python 3.x
-- Django 5.x
+- Python
+- Django 5
 - Django REST Framework
 - SimpleJWT
-- SQLite
+- PostgreSQL
 
 ## ✅ Funcionalidades
 
@@ -23,12 +23,12 @@ API REST completa para gestão de filmes desenvolvida com Django e Django REST F
 
 ## 🔧 Como rodar o projeto localmente
 
-Pré-requisitos: Python 3.x instalado
+**Pré-requisitos:** Python 3 e um banco PostgreSQL em execução.
 
 **1. Clone o repositório**
 ```bash
-git clone https://github.com/seu-usuario/flix-api.git
-cd flix-api
+git clone https://github.com/LeonardoAlmeidaGit/flix_api.git
+cd flix_api
 ```
 
 **2. Crie e ative o ambiente virtual**
@@ -43,30 +43,43 @@ venv\Scripts\activate     # Windows
 pip install -r requirements.txt
 ```
 
-**4. Configure as variáveis de ambiente**
+**4. Suba um PostgreSQL (opção rápida via Docker)**
+```bash
+docker run -d --name flix_db -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=flix_api -p 5432:5432 postgres:16
+```
+> Se já tiver um PostgreSQL local, pule este passo e ajuste as credenciais no `.env`.
 
-Crie um arquivo `.env` na raiz do projeto:
+**5. Configure as variáveis de ambiente**
 
-SECRET_KET=cole-sua-SECRET_KEY-aqui
+Crie um arquivo `.env` na raiz do projeto com base no `.env.example`:
+```env
+SECRET_KEY=cole-sua-SECRET_KEY-aqui
 DEBUG=True
 ALLOWED_HOSTS=localhost,127.0.0.1
 
-**5. Execute as migrations**
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=flix_api
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_HOST=localhost
+DB_PORT=5432
+```
+
+**6. Execute as migrations**
 ```bash
 python manage.py migrate
 ```
 
-**6. Crie um superusuário**
+**7. Crie um superusuário**
 ```bash
 python manage.py createsuperuser
 ```
 
-**7. Inicie o servidor**
+**8. Inicie o servidor**
 ```bash
 python manage.py runserver
 ```
 Acesse http://127.0.0.1:8000 no navegador.
-
 
 ## 🔐 Permissões e Grupos
 
@@ -75,6 +88,8 @@ O sistema utiliza o sistema nativo de grupos e permissões do Django. Para liber
 ## 📡 API REST
 
 A API utiliza autenticação JWT. Para obter um token de acesso:
+
+```http
 POST /api/v1/authentication/token/
 Content-Type: application/json
 
@@ -82,23 +97,32 @@ Content-Type: application/json
   "username": "seu-usuario",
   "password": "sua-senha"
 }
+```
 
-## Endpoints disponíveis
+Para autenticar nas requisições, envie o token no header: `Authorization: Bearer <access_token>`.
 
-| Recurso      | Listagem / Criação    | Detalhe / Edição / Exclusão   |
-|--------------|-----------------------|-------------------------------|
-| Filmes       | /api/v1/movies/       | /api/v1/movies/\<id\>/        |
-| Atores       | /api/v1/actors/       | /api/v1/actors/\<id\>/        |
-| Gêneros      | /api/v1/genres/       | /api/v1/genres/\<id\>/        |
-| Avaliações   | /api/v1/reviews/      | /api/v1/reviews/\<id\>/       |
-| Estatísticas | /api/v1/movies/stats/ | —                             |
+### Endpoints disponíveis
 
-Para autenticar nas requisições, envie o bearer token no header.
+| Recurso      | Listagem / Criação      | Detalhe / Edição / Exclusão |
+|--------------|-------------------------|-----------------------------|
+| Filmes       | `/api/v1/movies/`       | `/api/v1/movies/<id>/`      |
+| Atores       | `/api/v1/actors/`       | `/api/v1/actors/<id>/`      |
+| Gêneros      | `/api/v1/genres/`       | `/api/v1/genres/<id>/`      |
+| Avaliações   | `/api/v1/reviews/`      | `/api/v1/reviews/<id>/`     |
+| Estatísticas | `/api/v1/movies/stats/` | —                           |
 
 ## 📁 Estrutura do Projeto
-flix-api/ ├── app/ # Configurações principais, settings, urls e permissões ├── authentication/ # Endpoints de autenticação JWT 
-├── genres/ # Gestão de gêneros ├── actors/ # Gestão de atores ├── movies/ # Gestão de filmes e estatísticas ├── reviews/ # Avaliações de filmes
+
+```bash
+flix_api/
+├── app/              # Configurações principais: settings, urls e permissões
+├── authentication/   # Endpoints de autenticação JWT
+├── genres/           # Gestão de gêneros
+├── actors/           # Gestão de atores
+├── movies/           # Gestão de filmes e estatísticas
+└── reviews/          # Avaliações de filmes
+```
 
 ## 👨‍💻 Autor
 
-Leonardo — [LinkedIn](https://www.linkedin.com/in/leonardoalmeida-) · [GitHub](https://github.com/LeonardoAlmeidaGit)
+Leonardo Almeida — [LinkedIn](https://www.linkedin.com/in/leonardo-almeida-dev/) · [GitHub](https://github.com/LeonardoAlmeidaGit)
